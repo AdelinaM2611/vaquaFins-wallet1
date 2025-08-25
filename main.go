@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"vaqua/config"
 	"vaqua/db"
@@ -49,6 +50,17 @@ func main() {
 	
 	router := routes.SetupRouter(healthHandler, userHandler,transferHandler,transactionHandler,incomeAndExpensesHandler,) //, transferHandler <--include after testing
 
-	fmt.Println("server is running on localhost:8080...")
-	http.ListenAndServe(":8080", router)
+	port := config.GetEnv("PORT", "8080") // get PORT from env, default 8080 locally
+addr := ":" + port
+
+fmt.Println("server is running on " + addr + "...")
+if err := http.ListenAndServe(addr, router); err != nil {
+    log.Fatal(err)}
+
+
+	
+	
+	/*fmt.Println("server is running on localhost:8080...")
+	http.ListenAndServe(":8080", router)*/
+	
 }
